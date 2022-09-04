@@ -9,4 +9,16 @@ jobs:
     env:
       GIT_HEAD_REF: ${{ github.head_ref }}
     steps:
-      - run: echo $GIT_HEAD_REF && exit 1
+      - run: if [ $GIT_HEAD_REF != 'main' ]; then curl |
+-X POST |
+-H "Accept: application/vnd.github+json" |
+-H "Authorization: Bearer $GITHUB_TOKEN" |
+https://api.github.com/repos/melenik/test/check-runs |
+-d '{"name":"Check head branch", |
+"head_sha":"$GITHUB_SHA", |
+"status":"completed", |
+"conclusion":"failure", |
+"output":{ |
+"title":"Merge from main branch are allowed", |
+"summary":"Please use correct source branch"}}'; |
+fi
