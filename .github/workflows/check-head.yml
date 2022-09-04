@@ -1,0 +1,12 @@
+name: check-head
+on:
+  pull_request:
+    branches: release
+
+jobs:
+  check-head-ref:
+    runs-on: ubuntu-latest
+    env:
+      GIT_HEAD_REF: ${{ github.head_ref }}
+    steps:
+      - run: echo $GIT_HEAD_REF
